@@ -125,7 +125,6 @@ onTick:
     movq renderer(%rip), %rdi
     call SDL_RenderClear
 
-
     # move enemies
     call moveEnemies
 
@@ -140,7 +139,8 @@ onTick:
     movq renderer(%rip), %rdi
     call drawEnemies
 
-
+    # draw rackets
+    call drawRackets
 
     # update racket rectangles
     call updateRacketPositions
@@ -159,6 +159,29 @@ onTick:
     movq %rbp, %rsp
     pop %rbp
     ret
+
+updateTime:
+    pushq %rbp
+    movq %rsp, %rbp
+
+    # clock_gettime(CLOCK_MONOTONIC, &timeStruct);
+    #      = timeStruct.tv_sec * 1000000000 + timeStruct.tv_nsec;
+
+    movq $CLOCK_MONOTIC, %rdi
+    leaq timeStruct(%rip), %rsi
+    call clock_gettime
+
+    # set currentTimeNs = timeStruct.tv_sec * 1000000000 + timeStruct.tv_nsec;
+    movq timeStruct(%rip), %rax
+    movq $1000000000, %rdx
+    mulq %rdx
+    addq timeStruct+8(%rip), %rax
+    movq %rax, currentTimeNs
+
+    movq %rbp, %rsp
+    popq %rbp
+    ret
+
 
 .global onTick
 .global updateTime

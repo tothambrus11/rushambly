@@ -23,6 +23,7 @@ highestScore:       .long 0
 score:              .long 0
 font:               .quad # pointer of a TTF_Font
 
+lifes:              .long 3 # number of lifes
 
 waitingForKeyframe: .long 0 # the index of the keyframe we are currently waiting for
 startTimeNs:        .long 0 # the time when we started the game
@@ -125,3 +126,4 @@ highestFmtString:                   .asciz "Highest: %ld"
 .global scoreFmtString
 .global highestFmtString
 .global PI_OVER_4
+.global lifes

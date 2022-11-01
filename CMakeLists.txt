@@ -17,6 +17,12 @@ add_executable(hello
         src/variables.s
         src/onTick.s
         src/main.s
+        src/enemies.s
+        src/intersection.s
+        src/rackets.s
+        src/outOfBounds.s
+        src/isMiddle.s
+        src/onInit.s
         main2.c
         )
 

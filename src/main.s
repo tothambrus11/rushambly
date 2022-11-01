@@ -8,6 +8,7 @@
 #include "SDL2/SDL_ttf.h"
 #include "stdio.h"
 #include "f2fs_fs.h"
+#include "time.h"
 
 .global main
 
@@ -21,7 +22,7 @@
 
 SDL_HINT_RENDER_SCALE_QUALITY: .asciz "SDL_RENDER_SCALE_QUALITY"
 sdlInitFailedMessage: .asciz "SDL_Init failed. Exiting..."
-title: .asciz "Geometry Semicolon 1.0"
+title: .asciz "Rush (Assembl)E 1.0"
 musicPath: .asciz "../resources/zanobi.mp3"
 musicError: .asciz "error loading music: %s\n"
 music: .quad 0
@@ -115,6 +116,9 @@ main:
     movq $-1, %rsi
     movq $0, %rax
     call Mix_PlayMusic
+
+    # initialize the game
+    call resetGame
 
     # while (isAppRunning) {
     whileAppRunning:

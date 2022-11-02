@@ -44,6 +44,9 @@ onInit:
     # start game
     movb $1, isGameRunning
 
+    # reset the time delay between enemies
+    movq $initialTimeDelayBetweenEnemies, timeDelayBetweenEnemies
+
     movq %rbp, %rsp
     popq %rbp
     ret

@@ -15,7 +15,8 @@ userOutOfBounds:
 
     addq $enemies, %rdi
     call isMiddle
-    jne notMiddle
+    cmpb $0, %al
+    jne middle
 
     call decreaseLives # lose a life if you miss one, mwahahaha!
 

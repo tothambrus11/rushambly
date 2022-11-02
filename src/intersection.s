@@ -30,15 +30,7 @@ onUserIntersected:
         jmp doneAwarding
 
     awardPoints:
-        ## AWARD POINTS
-
-        incl (score)
-
-        movq $0, %rax
-        movq $fmtStringScore, %rdi
-        movq $0, %rsi
-        movl score, %esi
-        call printf
+        call incrementScore
 
     doneAwarding:
 

@@ -3,7 +3,7 @@
 Rushambly is a 2D arcade-style game written in x86 Assembly. A mix between pong and space invaders, Rashembly will have you lose track of your mouse in a matter of seconds!
 
 <p width="center">
-  <img style="width: 100%" src="resources/preview.jpg" />
+  <img style="width: 100%" src="resources/preview.jpeg" />
 </p>
 
 ## How to play?

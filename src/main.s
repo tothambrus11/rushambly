@@ -22,7 +22,7 @@
 
 SDL_HINT_RENDER_SCALE_QUALITY: .asciz "SDL_RENDER_SCALE_QUALITY"
 sdlInitFailedMessage: .asciz "SDL_Init failed. Exiting..."
-title: .asciz "Rushambly 1.2    "
+title: .asciz "Rushambly 86.64    "
 musicPath: .asciz "../resources/zanobi.mp3"
 musicError: .asciz "error loading music: %s\n"
 music: .quad 0

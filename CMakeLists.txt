@@ -26,7 +26,6 @@ add_executable(rushabmly
         src/onGameOver.s
         src/scoreText.s
         src/scoreManager.s
-        main2.c
         )
 
 target_include_directories(rushabmly

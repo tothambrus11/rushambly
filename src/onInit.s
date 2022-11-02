@@ -20,13 +20,13 @@ onInit:
 
     movq $0, %r8
     resetLoopStart:
-        cmpq $enemySize, %r8
+        cmpq $enemiesSize, %r8
         je resetLoopEnd
 
         movq $enemies, %r9
         addq %r8, %r9
-        movl $0, 4(%r9) # reset vx
-        movl $0, 6(%r9) # reset vy
+        movw $0, 4(%r9) # reset vx
+        movw $0, 6(%r9) # reset vy
 
         addq $enemySize, %r8
         jmp resetLoopStart

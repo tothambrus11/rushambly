@@ -13,6 +13,11 @@ incrementScore:
     # increment score value
     incl _score
 
+    # decrement delay between enemies
+    subq $50000000, timeDelayBetweenEnemies(%rip)
+
+
+
     # set current score to highest score if it is higher
     movl _highestScore, %eax
     cmpl %eax, _score

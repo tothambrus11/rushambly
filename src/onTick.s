@@ -5,9 +5,14 @@
 .global racketInnerO
 .equ CLOCK_MONOTIC, 1
 
-
 .data
+.equ initialTimeDelayBetweenEnemies, 1837500000
+timeDelayBetweenEnemies: .quad initialTimeDelayBetweenEnemies
+.global initialTimeDelayBetweenEnemies
+.global timeDelayBetweenEnemies
+
 event: .skip 56 # an SDL_Event
+
 mouseX: .long 0
 mouseY: .long 0
 
@@ -100,7 +105,8 @@ onTick:
         jg skipEnemySending # if currentTimeNs <= nextEnemyShouldBeSentAt
             call spawnEnemy
             movq currentTimeNs, %rax
-            addq $1837500000, %rax
+            movq timeDelayBetweenEnemies, %rdi
+            addq %rdi, %rax
             movq %rax, nextEnemyShouldBeSentAt
         skipEnemySending:
 

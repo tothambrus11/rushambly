@@ -1,15 +1,10 @@
 .equ SDL_KEYDOWN, 0x300
 .equ SDL_QUIT, 0x100
-.equ ballSize, 44
-.equ ballBigR, 22
-.equ ballLittleR, 12
-.equ ballBigRInner, ballBigR - 5
-.equ ballLittleRInner, ballLittleR - 5
+
 .equ racketInnerO, 21
 .global racketInnerO
 .equ CLOCK_MONOTIC, 1
 
-printTimeFmtString: .asciz "time in ns: %ld\n"
 
 .data
 event: .skip 56 # an SDL_Event
@@ -59,7 +54,7 @@ onTick:
     call SDL_PollEvent
 
     cmpl $0, %eax
-    jz skipEventChecking
+    jz skipEventChecking # when no event is available, skip event checking
 
         movl event(%rip), %edi
         cmpl $SDL_KEYDOWN, %edi
@@ -71,8 +66,13 @@ onTick:
         jmp switchEnd
 
         handleKeydown:
-            call spawnEnemy
-            jmp switchEnd
+            cmpb $0, isGameRunning(%rip)
+            je restartGameS
+                call spawnEnemy
+                jmp switchEnd
+            restartGameS:
+                call onInit
+                jmp switchEnd
 
 
         handleQuit:
@@ -91,24 +91,38 @@ onTick:
     #        updateVel();
     #    }
 
+    cmpb $0, isGameRunning
+    je skipGameUpdate
+
+        # send enemy if enough time has passed
+        movq nextEnemyShouldBeSentAt, %rax
+        cmpq currentTimeNs, %rax
+        jg skipEnemySending # if currentTimeNs <= nextEnemyShouldBeSentAt
+            call spawnEnemy
+            movq currentTimeNs, %rax
+            addq $1837500000, %rax
+            movq %rax, nextEnemyShouldBeSentAt
+        skipEnemySending:
+
+        # move enemies
+        call moveEnemies
+
+        # check if any enemies hit a racket
+        call anyIntersect
+
+        # check if any enemies went out of the screen
+        call outOfBounds
+
+        # update racket rectangles
+        call updateRacketPositions
+
+
     skipGameUpdate:
 
     # update time
     call updateTime
 
-    # send enemy if enough time has passed
-    movq nextEnemyShouldBeSentAt, %rax
-    cmpq currentTimeNs, %rax
-    jg skipEnemySending # if currentTimeNs < nextEnemyShouldBeSentAt
 
-    call spawnEnemy
-
-    movq currentTimeNs, %rax
-    addq $937500000, %rax
-    movq %rax, nextEnemyShouldBeSentAt
-
-
-    skipEnemySending:
 
 
     # Clear screen
@@ -125,16 +139,6 @@ onTick:
     movq renderer(%rip), %rdi
     call SDL_RenderClear
 
-    # move enemies
-    call moveEnemies
-
-    # check if any enemies hit a racket
-    call anyIntersect
-
-    # check if any enemies went out of the screen
-    call outOfBounds
-
-    # video game name for a game written in assembly in that you have to dodge the enemies for a song, like you play the song Rush E on piano: https://www.youtube.com/watch?v=6JYIGclVQdw
     # draw enemies
     movq renderer(%rip), %rdi
     call drawEnemies
@@ -142,10 +146,11 @@ onTick:
     # draw rackets
     call drawRackets
 
-    # update racket rectangles
-    call updateRacketPositions
+    # update text
+    call updateText
 
-
+    # draw text
+    call drawText
 
     # SDL_RenderPresent(renderer);
     movq renderer(%rip), %rdi

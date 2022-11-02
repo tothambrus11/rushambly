@@ -20,11 +20,6 @@
 .global enemySize
 enemies: .skip enemiesSize
 
-printRight: .asciz "Right\n"
-printLeft: .asciz "Left\n"
-printUp: .asciz "Up\n"
-printDown: .asciz "Down\n"
-
 printSeq: .asciz "x_1 = %d \ty_2 = %d\nx_2 = %d \ty_2 = %d\nx_3 = %d \ty_3 = %d\n\n"
 
 .text
@@ -111,10 +106,6 @@ spawnEnemy:
         # else addDownEnemy
 
         addDownEnemy:
-             # print down
-            movq $printDown, %rdi
-            movq $0, %rax
-            call printf
             # set vx to 0
             movq $4, %r8
             movw $0, enemies(%r12, %r8, 1)
@@ -133,12 +124,6 @@ spawnEnemy:
 
             jmp addEnemyEnd
         addUpEnemy:
-
-            # print up
-            movq $printUp, %rdi
-            movq $0, %rax
-            call printf
-
             # set vx to 0
             movq $4, %r8
             movw $0, enemies(%r12, %r8, 1)
@@ -169,12 +154,6 @@ spawnEnemy:
         # else addLeftEnemy
 
         addLeftEnemy:
-
-            # print left
-            movq $printLeft, %rdi
-            movq $0, %rax
-            call printf
-
             # set vx to -1 so that it initially goes left
             movq $4, %r8
             movw $-1, enemies(%r12, %r8, 1)
@@ -196,12 +175,6 @@ spawnEnemy:
 
             jmp addEnemyEnd
         addRightEnemy:
-            # print right
-            movq $printRight, %rdi
-            movq $0, %rax
-            call printf
-
-
             # set vx to 1 so that it initially goes right
             movq $4, %r8
             movw $1, enemies(%r12, %r8, 1)
@@ -509,7 +482,7 @@ drawEnemy:
     movq %r13, %rdi
     leaq 8(%r12), %rsi # get pointer to p1_x
     leaq 14(%r12), %rdx # get pointer to p1_y
-    movq $3, %rcx # 3 points should be redered
+    movq $3, %rcx # 3 points should be rendered
 
 
 

@@ -1,27 +1,22 @@
+#include "SDL2/SDL_mixer.h"
+
 .data;
 
 .text
 
-.global resetGame
-
-resetGame:
+.global maxLives
+onInit:
     pushq %rbp
     movq %rsp, %rbp
 
     # reset the game
-    movl $3, (lifes)
-    movl $0, (score)
-
-    # reset all enemies
+    call resetLives
+    call resetScore
 
     # update time
     call updateTime
 
-    # send the first enemy
-    movq currentTimeNs, %rax
-    addq $1000000000, %rax
-    movq %rax, nextEnemyShouldBeSentAt
-
+    # reset all enemies
 
     movq $0, %r8
     resetLoopStart:
@@ -37,7 +32,20 @@ resetGame:
         jmp resetLoopStart
     resetLoopEnd:
 
+
+    # send the first enemy
+    movq currentTimeNs, %rax
+    addq $1000000000, %rax
+    movq %rax, nextEnemyShouldBeSentAt
+
+    # Mix_ResumeMusic();
+    call Mix_ResumeMusic
+
+    # start game
+    movb $1, isGameRunning
+
     movq %rbp, %rsp
     popq %rbp
     ret
+.global onInit
 

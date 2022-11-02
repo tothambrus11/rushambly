@@ -17,9 +17,9 @@ userOutOfBounds:
     call isMiddle
     jne notMiddle
 
-    decl lifes # lose a life is you miss one, mwahahaha!
+    call decreaseLives # lose a life if you miss one, mwahahaha!
 
-    notMiddle:
+    middle:
 
     # set the enemy to be inactive
     movq $4, %r12

@@ -22,7 +22,7 @@
 
 SDL_HINT_RENDER_SCALE_QUALITY: .asciz "SDL_RENDER_SCALE_QUALITY"
 sdlInitFailedMessage: .asciz "SDL_Init failed. Exiting..."
-title: .asciz "Rush (Assembl)E 1.0"
+title: .asciz "Rushambly 1.2    "
 musicPath: .asciz "../resources/zanobi.mp3"
 musicError: .asciz "error loading music: %s\n"
 music: .quad 0
@@ -71,6 +71,9 @@ main:
     call SDL_CreateRenderer
     movq %rax, renderer(%rip)
 
+    # Init font
+    call initFont
+
     # Mix_Init(MIX_INIT_MP3);
     movl $MIX_INIT_MP3, %edi
     call Mix_Init
@@ -118,7 +121,7 @@ main:
     call Mix_PlayMusic
 
     # initialize the game
-    call resetGame
+    call onInit
 
     # while (isAppRunning) {
     whileAppRunning:

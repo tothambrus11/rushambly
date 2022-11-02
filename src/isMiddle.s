@@ -22,8 +22,8 @@ isMiddle:
     cmpw $0, %ax
     jne horizontal
 
-    # inactive so skip
-    movq $0, %rax
+    # inactive so probably bad
+    movq $1, %rax
     jmp end
 
     horizontal:

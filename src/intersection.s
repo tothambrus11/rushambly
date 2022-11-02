@@ -1,7 +1,7 @@
 .data
 plusPoint: .asciz " + score\n"
 minusPoint: .asciz " - score\n"
-fmtStringLifes: .asciz "Lifes Left: %d\n"
+fmtStringLives: .asciz "lives Left: %d\n"
 fmtStringScore: .asciz "Points: %d\n"
 
 .text
@@ -26,26 +26,9 @@ onUserIntersected:
     jne awardPoints
 
     # penalize since it is in the middle
+        call decreaseLives
+        jmp doneAwarding
 
-    ## PENALIZE POINTS
-
-    decl (lifes)
-
-    movq $0, %rax
-    movq $fmtStringLifes, %rdi
-    movq $0, %rsi
-    movl lifes, %esi
-    call printf
-
-    cmpl $0, (lifes)
-    jne doneAwarding
-
-    # reset game, out of lifes!
-    call resetGame
-
-    jmp doneAwarding
-
-    # if not, check if enemy is in the left or right side of the screen
     awardPoints:
         ## AWARD POINTS
 

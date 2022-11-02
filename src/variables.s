@@ -12,19 +12,6 @@ halfPlayerSize:     .long 1108175838 # float playerRadius / sqrt(2)
 
 renderer:           .quad # pointer of an SDL_Renderer
 
-currentScoreTexture: .quad # pointer of an SDL_Texture
-highestScoreTexture: .quad # pointer of an SDL_Texture
-
-highestScoreBuffer: .skip 64 # string buffer for printing highest score
-currentScoreBuffer: .skip 64 # string buffer for printing highest score
-
-highestScore:       .long 0
-
-score:              .long 0
-font:               .quad # pointer of a TTF_Font
-
-lifes:              .long 3 # number of lifes
-
 waitingForKeyframe: .long 0 # the index of the keyframe we are currently waiting for
 startTimeNs:        .long 0 # the time when we started the game
 
@@ -75,9 +62,6 @@ playerSquare:
 
 timeStruct:                         .skip 16 # a timespec
 
-scoreFmtString:                     .asciz "Score: %ld"
-highestFmtString:                   .asciz "Highest: %ld"
-
 .text
 
 .global maxHeight
@@ -105,8 +89,6 @@ highestFmtString:                   .asciz "Highest: %ld"
 .global highestScoreTexture
 .global currentScoreBuffer
 .global highestScoreBuffer
-.global highestScore
-.global score
 .global font
 .global waitingForKeyframe
 .global startTimeNs
@@ -126,4 +108,3 @@ highestFmtString:                   .asciz "Highest: %ld"
 .global scoreFmtString
 .global highestFmtString
 .global PI_OVER_4
-.global lifes
